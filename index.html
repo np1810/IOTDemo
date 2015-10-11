@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="author" content="Nitin Pathak, http://facebook.com/np1810"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>IOT Demo</title>
+</head>
+<body onload="setButton()">
+    <div class="card-panel">
+        <h1>.:IOT Demo:.</h1>
+        <input id="code" type="password" placeholder="Code..."></input>
+        <button id="btn" class="disabled" onclick="toggleButton()">Loading...</button>
+    </div>
+    <script>
+        function setButton() {
+            $.post("state.txt", function(result) {
+                if (result === "on") {
+                    $("#btn").removeClass("off");
+                    $("#btn").html("Current State: <b>ON</b>");
+                } else if (result === "off") {
+                    $("#btn").addClass("off");
+                    $("#btn").html("Current State: <b>OFF</b>");
+                }
+                $("#btn").removeClass("disabled");
+            });
+        }
+
+        function toggleButton() {
+            if (!$("#btn").hasClass("disabled")) {
+                $("#btn").addClass("disabled");
+                $.post("toggleState.php", "code=" + $("#code").val(), setButton);
+            }
+        }
+    </script>
+</body>
+</html>
